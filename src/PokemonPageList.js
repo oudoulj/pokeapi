@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-const PokemonPageList = ({ pokemonList, pageId, handleClick }) => {
+const PokemonPageList = ({ pokemonList, handleClick, ...props }) => {
   //   state = {
   //     pokemonName: "",
   //     message: ""
@@ -21,7 +21,7 @@ const PokemonPageList = ({ pokemonList, pageId, handleClick }) => {
                 style={{ cursor: "pointer" }}
                 onClick={() => {
                   console.log("onClick on li element", p.name);
-                  console.log("pageId", pageId);
+                  console.log("pageId", props.match.params.pageId);
                   handleClick(p.name);
                 }}
                 //   onClick={() => {

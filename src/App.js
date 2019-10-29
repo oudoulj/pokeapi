@@ -9,12 +9,8 @@ const App = () => {
   const [pokemonList, setPokemonList] = useState([]);
   const [pokemonDetails, setPokemonDetails] = useState([]);
   const [pokemonName, setPokemonName] = useState("");
-  const [pokemonPhoto, setPokemonPhoto] = useState("");
+  const [pokemonPhoto, setPokemonPhoto] = useState(null);
   const [page, setPage] = useState(1);
-
-  // componentDidMount() {
-  //   this.loadPokemons();
-  // }
 
   useEffect(() => {
     loadPokemons();
@@ -22,42 +18,24 @@ const App = () => {
   }, []);
 
   const loadPokemons = pageToLoad => {
-    // (async () => {
-    // const sleep = m => new Promise(r => setTimeout(r, m));
-    // await sleep(1000);
     ky.get(`https://pokeapi.co/api/v2/pokemon/?limit=10&offset=${(pageToLoad - 1) * 10}`)
       .json()
       .then(pokemonData => {
         setPokemonList(pokemonData.results);
       });
-    //this.setState({ pokemonList: pokemonList.results });
-    // setPokemonList(pokemonList.results);
-    // console.log(pokemonList.results);
-    // })();
   };
 
   const loadDetails = name => {
-    // (async () => {
-    // this.setState({ pokemonDetails: [] }); //reset
-
-    console.log("selected id = " + name);
+    console.log("selected name = " + name);
     setPokemonName(name);
-    // const sleep = m => new Promise(r => setTimeout(r, m));
-    // await sleep(1000);
+
     ky.get(`https://pokeapi.co/api/v2/pokemon/${name}`)
       .json()
       .then(pokeDetails => {
         setPokemonDetails(pokeDetails.abilities);
         setPokemonPhoto(pokeDetails.sprites["front_default"]);
-        console.log(pokeDetails.sprites["front_default"]);
+        console.log("photo", pokeDetails.sprites["front_default"]);
       });
-    //.then(pokeDetails => setPokemonPhoto(pokeDetails.sprites[4]));
-    // this.setState({ pokemonDetails: pokemonDetails.abilities });
-    // this.setState({ message: "" }); //reset
-    // setPokemonList(pokemonDetails.abilities);
-
-    // console.log(pokemonDetails.abilities);
-    // })();
   };
 
   return (
@@ -96,13 +74,25 @@ const App = () => {
           </button>
           <Router>
             <Link to={"/page/" + page}>Next ></Link>
-            {/* <Route path="/page/:pageId" component={} /> */}
+            <Route
+              path="/page/:pageId"
+              render={routeParams => {
+                console.log("routeParams", routeParams);
+                return (
+                  <PokemonPageList
+                    //pageId={this.state.pageId}
+                    pokemonList={pokemonList}
+                    handleClick={loadDetails}
+                  />
+                );
+              }}
+            ></Route>
           </Router>
         </div>
         <div className="column">
           Abilities for {pokemonName}
           <div>
-            <img src={pokemonPhoto} alt="poke" />
+            {pokemonPhoto !== null ? <img src={pokemonPhoto} alt="poke" /> : null}
             <ul>
               {/* {message} */}
               {pokemonDetails.map((a, index) => (
