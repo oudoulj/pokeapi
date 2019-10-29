@@ -15,13 +15,14 @@ const PokemonPageList = ({ pokemonList, pageId, handleClick }) => {
       <ul>
         {pokemonList.length === 0
           ? "Loading..."
-          : pokemonList.map((p, index) => (
+          : pokemonList.map(p => (
               <li
-                key={index}
+                key={p.name}
                 style={{ cursor: "pointer" }}
                 onClick={() => {
-                  console.log("onClick on li element", index);
-                  handleClick(pageId);
+                  console.log("onClick on li element", p.name);
+                  console.log("pageId", pageId);
+                  handleClick(p.name);
                 }}
                 //   onClick={() => {
                 //     this.setState({ message: "chargement des détails..." });

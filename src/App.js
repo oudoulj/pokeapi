@@ -8,6 +8,8 @@ const App = () => {
   //state = { pokemonList: [], pokemonDetails: [], page: 0 };
   const [pokemonList, setPokemonList] = useState([]);
   const [pokemonDetails, setPokemonDetails] = useState([]);
+  const [pokemonName, setPokemonName] = useState("");
+  const [pokemonPhoto, setPokemonPhoto] = useState("");
   const [page, setPage] = useState(1);
 
   // componentDidMount() {
@@ -34,16 +36,22 @@ const App = () => {
     // })();
   };
 
-  const loadDetails = id => {
+  const loadDetails = name => {
     // (async () => {
     // this.setState({ pokemonDetails: [] }); //reset
 
-    console.log("selected id = " + id);
+    console.log("selected id = " + name);
+    setPokemonName(name);
     // const sleep = m => new Promise(r => setTimeout(r, m));
     // await sleep(1000);
-    ky.get(`https://pokeapi.co/api/v2/pokemon/${id}`)
+    ky.get(`https://pokeapi.co/api/v2/pokemon/${name}`)
       .json()
-      .then(pokeDetails => setPokemonDetails(pokeDetails.abilities));
+      .then(pokeDetails => {
+        setPokemonDetails(pokeDetails.abilities);
+        setPokemonPhoto(pokeDetails.sprites["front_default"]);
+        console.log(pokeDetails.sprites["front_default"]);
+      });
+    //.then(pokeDetails => setPokemonPhoto(pokeDetails.sprites[4]));
     // this.setState({ pokemonDetails: pokemonDetails.abilities });
     // this.setState({ message: "" }); //reset
     // setPokemonList(pokemonDetails.abilities);
@@ -92,14 +100,16 @@ const App = () => {
           </Router>
         </div>
         <div className="column">
-          Abilities for {/* {pokemonName} */}
-          <br />
-          <ul>
-            {/* {message} */}
-            {pokemonDetails.map((a, index) => (
-              <li key={index}>{a.ability.name}</li>
-            ))}
-          </ul>
+          Abilities for {pokemonName}
+          <div>
+            <img src={pokemonPhoto} alt="poke" />
+            <ul>
+              {/* {message} */}
+              {pokemonDetails.map((a, index) => (
+                <li key={index}>{a.ability.name}</li>
+              ))}
+            </ul>
+          </div>
         </div>
       </div>
     </div>
