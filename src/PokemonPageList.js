@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 
 const PokemonPageList = ({ pokemonList, handleClick, ...props }) => {
   //   state = {
@@ -6,8 +6,8 @@ const PokemonPageList = ({ pokemonList, handleClick, ...props }) => {
   //     message: ""
   //   };
 
-  const [pokemonName, setPokemonName] = useState("");
-  const [message, setMessage] = useState("");
+  //   const [pokemonName, setPokemonName] = useState("");
+  //   const [message, setMessage] = useState("");
 
   //   const { pokemonList, pageId, handleClick } = this.props;
   return (

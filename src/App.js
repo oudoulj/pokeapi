@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from "react";
 import ky from "ky";
-import { BrowserRouter as Router, Route, Link } from "react-router-dom";
+import { BrowserRouter as Router, Route, Link, Switch } from "react-router-dom";
 import "./App.css";
 import PokemonPageList from "./PokemonPageList";
+import Carousel from "./Carousel";
 
 const App = () => {
   //state = { pokemonList: [], pokemonDetails: [], page: 0 };
@@ -39,70 +40,82 @@ const App = () => {
   };
 
   return (
-    <div className="some-page-wrapper">
-      <div className="row">
-        <div className="column">
-          My Pokemon List
-          <PokemonPageList
-            //pageId={this.state.pageId}
-            pokemonList={pokemonList}
-            handleClick={loadDetails}
-          />
-          {page > 1 ? (
-            <button
-              onClick={() => {
-                //this.setState({ page: this.state.page + 1 });
-                const nextPage = page - 1;
-                setPage(nextPage); //not reliable, maybe useless
-                console.log("nextPage", nextPage);
-                loadPokemons(nextPage);
-              }}
-            >
-              {"<< Prev"}
-            </button>
-          ) : null}
-          <button
-            onClick={() => {
-              //this.setState({ page: this.state.page + 1 });
-              const nextPage = page + 1;
-              setPage(nextPage); //not reliable, maybe useless
-              console.log("nextPage", nextPage);
-              loadPokemons(nextPage);
-            }}
-          >
-            Next >>
-          </button>
-          <Router>
-            <Link to={"/page/" + page}>Next ></Link>
-            <Route
-              path="/page/:pageId"
-              render={routeParams => {
-                console.log("routeParams", routeParams);
-                return (
+    // My Pokemon List
+    // <PokemonPageList
+    //   //pageId={this.state.pageId}
+    //   pokemonList={pokemonList}
+    //   handleClick={loadDetails}
+    // />
+
+    <Router>
+      <ul>
+        <li>
+          <Link to={"/page/" + page}>Next ></Link>
+        </li>
+        <li>
+          <Link to={"/carousel/"}>Carousel (Link/Route)</Link>
+        </li>
+      </ul>
+      <Switch>
+        {/* <Route
+        path="/page/:pageId"
+        render={routeParams => {
+          console.log("routeParams", routeParams);
+          return (
+            <div className="some-page-wrapper">
+              <div className="row">
+                <div className="column">
+                  {page > 1 ? (
+                    <button
+                      onClick={() => {
+                        //this.setState({ page: this.state.page + 1 });
+                        const nextPage = page - 1;
+                        setPage(nextPage); //not reliable, maybe useless
+                        console.log("nextPage", nextPage);
+                        loadPokemons(nextPage);
+                      }}
+                    >
+                      {"<< Prev"}
+                    </button>
+                  ) : null}
+                  <button
+                    onClick={() => {
+                      //this.setState({ page: this.state.page + 1 });
+                      const nextPage = page + 1;
+                      setPage(nextPage); //not reliable, maybe useless
+                      console.log("nextPage", nextPage);
+                      loadPokemons(nextPage);
+                    }}
+                  >
+                    Next >>
+                  </button>
+                  <a href="/Carousel">Go to carousel</a>
                   <PokemonPageList
                     //pageId={this.state.pageId}
                     pokemonList={pokemonList}
                     handleClick={loadDetails}
                   />
-                );
-              }}
-            ></Route>
-          </Router>
-        </div>
-        <div className="column">
-          Abilities for {pokemonName}
-          <div>
-            {pokemonPhoto !== null ? <img src={pokemonPhoto} alt="poke" /> : null}
-            <ul>
-              {/* {message} */}
-              {pokemonDetails.map((a, index) => (
-                <li key={index}>{a.ability.name}</li>
-              ))}
-            </ul>
-          </div>
-        </div>
-      </div>
-    </div>
+                </div>
+                <div className="column">
+                  Abilities for {pokemonName}
+                  <div>
+                    {pokemonPhoto !== null ? <img src={pokemonPhoto} alt="poke" /> : null}
+                    <ul>
+                      {pokemonDetails.map((a, index) => (
+                        <li key={index}>{a.ability.name}</li>
+                      ))}
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+          );
+        }}
+      ></Route> */}
+
+        <Route path="/carousel" component={Carousel} />
+      </Switch>
+    </Router>
   );
 };
 
